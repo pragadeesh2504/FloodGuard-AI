@@ -1,0 +1,49 @@
+{
+    "selected_model": "XGBoost",
+    "features": [
+        "rainfall_1d",
+        "rainfall_3d",
+        "rainfall_7d",
+        "rainfall_14d",
+        "rainfall_change_1d",
+        "rainfall_change_3d",
+        "rainfall_rate_3d",
+        "rainfall_deviation",
+        "temperature",
+        "humidity",
+        "pressure",
+        "wind_speed",
+        "month",
+        "season",
+        "latitude",
+        "longitude"
+    ],
+    "training_period": "2010-01-01 to 2020-12-31",
+    "testing_period": "2021-01-01 to 2023-12-31",
+    "training_samples": 38747,
+    "testing_samples": 10866,
+    "metrics": {
+        "accuracy": 0.9376035339591386,
+        "precision": 0.030612244897959183,
+        "recall": 0.6176470588235294,
+        "f1": 0.058333333333333334,
+        "roc_auc": 0.8976398905204623
+    },
+    "operational_metrics_threshold_0_40": {
+        "accuracy": 0.9218663721700718,
+        "precision": 0.024503504672897198,
+        "recall": 0.6176470588235294,
+        "f1": 0.04713804713804714,
+        "confusion_matrix": {
+            "tn": 9996,
+            "fp": 836,
+            "fn": 13,
+            "tp": 21
+        }
+    },
+    "dataset_version": "v3.0",
+    "weather_source": "ECMWF ERA5 via Open-Meteo",
+    "flood_source": "IIT Delhi/IMD IFI-Impacts v3.0",
+    "alert_threshold": 0.4,
+    "training_timestamp": "2026-10-04 07:27:35 UTC"
+}

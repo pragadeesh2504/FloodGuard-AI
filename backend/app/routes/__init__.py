@@ -1,0 +1,9 @@
+from app.routes.auth import router as auth
+from app.routes.prediction import router as prediction
+from app.routes.report import router as report
+from app.routes.shelter import router as shelter
+from app.routes.locations import router as locations
+from app.routes.admin import router as admin
+from app.routes.analytics import router as analytics
+from app.routes.incident import router as incident
+from app.routes.replay import router as replay

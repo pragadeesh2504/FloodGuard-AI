@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+sqlalchemy
+websockets
+requests
+apscheduler
+python-jose[cryptography]
+passlib[bcrypt]
+pandas
+numpy
+scikit-learn
+joblib
+xgboost
+lightgbm
+email-validator
+matplotlib
+seaborn
