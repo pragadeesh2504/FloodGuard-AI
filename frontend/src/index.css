@@ -53,9 +53,9 @@
 /* Custom styles for Leaflet Map to blend with dark mode */
 .leaflet-container {
   background: #0B0F19 !important;
-}
-.leaflet-tile {
-  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 550px !important;
 }
 .leaflet-bar a {
   background-color: rgba(30, 41, 59, 0.9) !important;

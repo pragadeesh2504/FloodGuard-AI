@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, Tooltip as LeafletTooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, Polyline, Tooltip as LeafletTooltip, useMap } from 'react-leaflet';
 import { api } from '../services/api';
+
+// Sub-component to force Leaflet to recalculate container dimensions after mount
+const MapResizer = () => {
+  const map = useMap();
+  useEffect(() => {
+    map.invalidateSize();
+    const t1 = setTimeout(() => map.invalidateSize(), 150);
+    const t2 = setTimeout(() => map.invalidateSize(), 600);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [map]);
+  return null;
+};
 import {
   ShieldAlert,
   MapPin,
@@ -74,7 +89,7 @@ const GISMap = () => {
   };
 
   const getSeverityColor = (severity) => {
-    switch (severity.toLowerCase()) {
+    switch ((severity || '').toLowerCase()) {
       case 'low': return '#F59E0B';
       case 'moderate': return '#F97316';
       case 'high': return '#EF4444';
@@ -89,7 +104,7 @@ const GISMap = () => {
     let minD = Infinity;
 
     shelters.forEach(s => {
-      if (s.status.toLowerCase() === 'open') {
+      if ((s.status || '').toLowerCase() === 'open') {
         // Geodesic / Euclidean approximation in km
         const dLat = (loc.latitude - s.latitude) * 111.0;
         const dLon = (loc.longitude - s.longitude) * 111.0 * Math.cos(loc.latitude * Math.PI / 180);
@@ -130,7 +145,7 @@ const GISMap = () => {
   const evacRoutes = calculateEvacRoutes();
 
   return (
-    <div className="h-[calc(100vh-8.5rem)] flex flex-col md:flex-row gap-5">
+    <div className="min-h-[650px] h-[calc(100vh-8.5rem)] flex flex-col md:flex-row gap-5">
       {/* Sidebar Control Panel */}
       <div className="w-full md:w-80 bg-slate-900/70 border border-slate-800/80 p-5 rounded-2xl flex flex-col justify-between overflow-y-auto custom-scrollbar backdrop-blur-md shrink-0">
         <div className="space-y-5">
@@ -257,13 +272,15 @@ const GISMap = () => {
       </div>
 
       {/* Main Interactive Leaflet Map */}
-      <div className="flex-1 rounded-2xl overflow-hidden border border-slate-800/80 relative shadow-2xl">
+      <div className="flex-1 rounded-2xl overflow-hidden border border-slate-800/80 relative shadow-2xl min-h-[550px] h-full flex flex-col">
         <MapContainer
           center={[11.1271, 78.6569]} // Centered on Tamil Nadu
           zoom={7}
-          className="h-full w-full bg-slate-950"
+          style={{ height: '100%', minHeight: '550px', width: '100%' }}
+          className="h-full w-full flex-1 bg-slate-950"
           zoomControl={true}
         >
+          <MapResizer />
           <TileLayer
             attribution='&copy; <a href="https://carto.com/">CARTO</a>'
             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
@@ -373,7 +390,7 @@ const GISMap = () => {
 
           {/* 3. Emergency Shelters Layer */}
           {showShelters && shelters.map((s) => {
-            const isOpen = s.status.toLowerCase() === 'open';
+            const isOpen = (s.status || '').toLowerCase() === 'open';
             const avail = Math.max(0, s.capacity - s.current_occupancy);
 
             return (
